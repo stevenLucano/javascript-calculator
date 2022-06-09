@@ -33,7 +33,6 @@ const Calculator = () => {
             setFormula(formula + key);
           }
         }
-        //setDecimal(true);
         break;
 
       default:
@@ -43,7 +42,38 @@ const Calculator = () => {
             setFormula([key]);
           } else {
             if (key === "+" || key === "-" || key === "X" || key === "/") {
-              setDecimal(false);
+              if (decimal) setDecimal(false);
+              if (content[content.length - 1] === "-") {
+                if (
+                  content[content.length - 2] === "-" ||
+                  content[content.length - 2] === "+" ||
+                  content[content.length - 2] === "*" ||
+                  content[content.length - 2] === "/"
+                ) {
+                  content.pop();
+                  content.pop();
+                  setFormula(formula.substring(0, formula.length - 2) + key);
+                } else if (key !== "-") {
+                  content.pop();
+                  setFormula(formula.substring(0, formula.length - 1) + key);
+                } else {
+                  setFormula(formula + key);
+                }
+              } else if (
+                content[content.length - 1] === "+" ||
+                content[content.length - 1] === "*" ||
+                content[content.length - 1] === "/"
+              ) {
+                if (key !== "-") {
+                  content.pop();
+                  setFormula(formula.substring(0, formula.length - 1) + key);
+                } else {
+                  setFormula(formula + key);
+                }
+              } else {
+                setFormula(formula + key);
+              }
+
               if (key === "X") {
                 setContent([...content, "*"]);
               } else {
@@ -51,19 +81,28 @@ const Calculator = () => {
               }
             } else {
               setContent([...content, key]);
+              setFormula(formula + key);
             }
-            setFormula(formula + key);
           }
         } else if (key !== "=") {
           setAux(false);
           if (key === "+" || key === "-" || key === "X" || key === "/") {
             setDecimal(false);
-            if (key === "X") {
-              setContent([value + "", "*"]);
-            } else {
-              setContent([value + "", key]);
+            if (
+              !(
+                content[content.length - 1] === "+" ||
+                content[content.length - 1] === "*" ||
+                content[content.length - 1] === "/"
+              ) ||
+              key === "-"
+            ) {
+              if (key === "X") {
+                setContent([value + "", "*"]);
+              } else {
+                setContent([value + "", key]);
+              }
+              setFormula(value + key);
             }
-            setFormula(value + key);
           } else {
             setContent([key]);
             setFormula([key]);
@@ -74,13 +113,13 @@ const Calculator = () => {
   };
 
   useEffect(() => {
-    console.log(content);
+    //console.log(content);
     if (content[content.length - 1] === "=") {
       content.pop();
-      const resultado = content.join("");
-      console.log(resultado);
+      const result = content.join("");
+      //console.log(resultado);
       try {
-        const res = math.round(math.evaluate(resultado), 12);
+        const res = math.round(math.evaluate(result), 12);
         setValue(res);
         if (!aux) {
           setAux(true);
@@ -91,8 +130,6 @@ const Calculator = () => {
       } catch (error) {
         setValue("Sintaxis Error");
       }
-
-      console.log(content);
     } else {
       if (!aux) {
         const val = content[content.length - 1];
@@ -106,7 +143,6 @@ const Calculator = () => {
         ) {
           setValue(val);
         } else {
-          //console.log(val === "." && !decimal);
           if (val === "." && !decimal) {
             setValue(value + ".");
             setDecimal(true);
@@ -119,11 +155,8 @@ const Calculator = () => {
         setAux(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
-
-  /*useEffect(() => {
-    console.log(content[content.length - 1] === "." && !decimal);
-  }, [value]);*/
 
   return (
     <div className="calculator">

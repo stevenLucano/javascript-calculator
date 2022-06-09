@@ -3,10 +3,24 @@
     src: url('./fonts/DS-DIGI.TTF') format('truetype');
 }
 
+@font-face {
+    font-family: karla;
+    src: url('./fonts/Karla-VariableFont_wght.ttf') format('truetype');
+}
+
 .App {
     width: 100vw;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+}
+
+.author {
+    margin-top: 15px;
+    text-align: center;
+    font-family: karla;
+    font-size: 20px;
+
 }
