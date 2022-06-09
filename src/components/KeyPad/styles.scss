@@ -1,0 +1,21 @@
+.keyPad {
+    height: 80%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 65px);
+}
+
+#clear {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+#equals {
+    grid-column: 4;
+    grid-row: 4 / 6;
+}
+
+#zero {
+    grid-column: 1 / 3;
+    grid-row: 5;
+}

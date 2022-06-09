@@ -1,0 +1,18 @@
+h3 {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+.keyButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: aliceblue;
+    outline: 1px solid black;
+}
+
+.keyButton:hover {
+    color: black;
+    outline: 1px solid gray;
+}
